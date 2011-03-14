@@ -1,0 +1,11 @@
+pyeventbrite v0.2.x:
+========================================
+Primary authors:
+
+* Matthew Tai <mtai84@gmail.com>
+
+Contributors (alphabetical by last):
+
+* Adam Berlinsky-Schine <atomos@gmail.com>
+* Jeremy Latt <jeremy.latt@gmail.com>
+* Ken Mitton <mittonk@alum.mit.edu>
