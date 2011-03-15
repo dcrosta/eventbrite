@@ -6,10 +6,11 @@ Description
 ===========
 Simple client for Eventbrite's HTTP-based API
 
-This client provides:
-1) Basic type validation of arguments
-2) Basic checks for required arguments
-3) Dictionary-based returns as described in Eventbrite's API docutmentation
+Client provides the following:
+
+* Basic type validation of arguments
+* Basic checks for required arguments
+* Dictionary-based returns as described in Eventbrite's API documentation
 
 For information, see http://developer.eventbrite.com/doc/
 

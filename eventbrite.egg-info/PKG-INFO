@@ -1,0 +1,45 @@
+Metadata-Version: 1.0
+Name: eventbrite
+Version: v0.2.0-beta
+Summary: Client for Eventbrite's HTTP-based API
+Home-page: http://github.com/mtai/eventbrite/
+Author: Matthew Tai
+Author-email: mtai84@gmail.com
+License: Apache
+Description: ==========
+        eventbrite
+        ==========
+        
+        Description
+        ===========
+        Simple client for Eventbrite's HTTP-based API
+        
+        This client provides:
+        1) Basic type validation of arguments
+        2) Basic checks for required arguments
+        3) Dictionary-based returns as described in Eventbrite's API docutmentation
+        
+        For information, see http://developer.eventbrite.com/doc/
+        
+        Installation
+        ============
+        NOTE:  This package requires a JSON library - by default we check for "simplejson" or use the built-in "json" library provided in python 2.6+
+        
+        * easy_install eventbrite
+        * pip install eventbrite
+        
+        Links
+        =====
+        * 0.2.x source <http://github.com/mtai/eventbrite/>
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.5
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
