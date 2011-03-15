@@ -1,4 +1,4 @@
-eventbrite v0.2.x:
+eventbrite v0.2x:
 ==================
 Primary authors:
 
@@ -11,7 +11,7 @@ Contributors (alphabetical by last):
 * Ken Mitton <mittonk@alum.mit.edu>
 
 
-eventbrite v0.1.x:
+eventbrite v0.1x:
 ==================
 Primary authors:
 

@@ -23,4 +23,4 @@ NOTE:  This package requires a JSON library - by default we check for "simplejso
 
 Links
 =====
-* 0.2.x source <http://github.com/mtai/eventbrite/>
+* 0.2x source <http://github.com/mtai/eventbrite/>

@@ -2,7 +2,8 @@
 ._*
 docs/._*
 docs/_build
-gearman/._*
+eventbrite/._*
+eventbrite.egg-info/*
 
 # Ignore compiled python files
 *.py[co]
