@@ -1,16 +1,24 @@
-============
-pyeventbrite
-============
+==========
+eventbrite
+==========
 
 Description
 ===========
-Client for Eventbrite's HTTP-based API
+Simple client for Eventbrite's HTTP-based API
 
-For information on Eventbrite and their HTTP-based API, see http://developer.eventbrite.com/doc/
+This client provides:
+1) Basic type validation of arguments
+2) Basic checks for required arguments
+3) Dictionary-based returns as described in Eventbrite's API docutmentation
+
+For information, see http://developer.eventbrite.com/doc/
 
 Installation
 ============
-* Work in progress
+NOTE:  This package requires a JSON library - by default we check for "simplejson" or use the built-in "json" library provided in python 2.6+
+
+* easy_install eventbrite
+* pip install eventbrite
 
 Links
 =====
