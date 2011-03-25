@@ -1,1 +1,5 @@
+v0.21-beta, 2011-03-25 -- Minor bugfix release
+ * Added basic 'search_events' call
+ * Fixed 'new_event' and 'update_event' to respect your privacy setting
+
 v0.20-beta, 2011-03-15 -- Initial release
