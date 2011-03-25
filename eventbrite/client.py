@@ -19,6 +19,7 @@ GET_REQUEST = 'GET'
 
 EVENTBRITE_LOGGER = logging.getLogger(__name__)
 
+# Input transformations
 def _datetime_to_string(incoming_datetime):
     return incoming_datetime.strftime(EVENTBRITE_DATE_STRING)
 
@@ -33,10 +34,6 @@ def _boolean_true_or_false(is_true):
 
 def _comma_separated_list(input_list):
     return ",".join(input_list)
-
-def _status_check(current_status):
-    assert current_status in ('draft', 'live', None)
-    return current_status
 
 class EventbriteClient(object):
     """Client for Eventbrite's HTTP-based API"""
@@ -153,13 +150,16 @@ class EventbriteClient(object):
         return api_response
 
     # COMPLETE
-    def new_event(self, title=None, description=None, start_date=None, end_date=None, timezone=None, public=True,
+    def new_event(self, title=None, description=None, start_date=None, end_date=None, timezone=None, public=False,
         personalized_url=None, venue_id=None, organizer_id=None, capacity=None, currency=None, status=None,
         custom_header=None, custom_footer=None, background_color=None, text_color=None, link_color=None, title_text_color=None,
         box_background_color=None, box_text_color=None, box_border_color=None, box_header_background_color=None, box_header_text_color=None
     ):
+        # For no good reason, default to PST
         timezone = timezone or "GMT-08"
-        public = False
+
+        if status:
+            assert status in ("draft", "live"), "Invalid status"
 
         method_arguments = dict(
             title       = dict(target='title', type=str, value=title, required=True),
@@ -174,7 +174,7 @@ class EventbriteClient(object):
             organizer_id     = dict(target='organizer_id', type=int, value=organizer_id),
             capacity         = dict(target='capacity', type=int, value=capacity),
             currency         = dict(target='currency', type=str, value=currency),
-            status           = dict(target='status', type=str, value=status, transform=_status_check),
+            status           = dict(target='status', type=str, value=status),
 
             custom_header    = dict(target='custom_header', type=str, value=custom_header),
             custom_footer    = dict(target='custom_footer', type=str, value=custom_footer),
@@ -193,21 +193,73 @@ class EventbriteClient(object):
         api_response = self._execute_api_call('event_new', api_arguments, authenticate=True)
         return api_response
 
-    # NOT IMPLEMENTED
-    def search_events(self, *args, **kwargs):
-        raise NotImplementedError
+    # UNTESTED
+    def search_events(self, keywords=None, categories=None,
+        address=None, city=None, region=None, postal_code=None, country_code=None, latitude=None, longitude=None,
+        within_distance=None, within_unit=None,
+        date_start=None, date_created=None, date_modified=None, organizer_name=None,
+        max_events=None, count_only=False, sort_by=None, page=None, since_id=None,
+        tracking_link=None):
+
+        allowed_categories = set(['conference', 'conventions', 'entertainment', 'fundraisers', 'meetings', 'other', 'performances', 'reunions', 'sales', 'seminars', 'social', 'sports', 'tradeshows', 'travel', 'religion', 'fairs', 'food', 'music', 'recreation'])
+        allowed_within_unit = set(['M', 'K'])
+        allowed_sorts = set(['id', 'date', 'name', 'city'])
+
+        if categories:
+            assert set(categories) <= allowed_categories, "%r not a subset of %r" % (categories, allowed_categories)
+        if within_unit:
+            assert within_unit in allowed_within_unit, "%r not in %r" % (within_unit, allowed_within_unit)
+        if sort_by:
+            assert sort_by in allowed_sorts, "%r not in %r" % (sort_by, allowed_sorts)
+
+        method_arguments = dict(
+            keywords         = dict(target='keywords', type=str, value=keywords),
+            categories       = dict(target='category', type=list, value=categories, transform=_comma_separated_list),
+
+            address          = dict(target='address', type=str, value=address),
+            city             = dict(target='city', type=str, value=city),
+            region           = dict(target='region', type=str, value=region),
+            postal_code      = dict(target='postal_code', type=str, value=postal_code),
+            country_code     = dict(target='country', type=str, value=country_code),
+            within_distance  = dict(target='within', type=int, value=within_distance),
+            within_unit      = dict(target='within_unit', type=str, value=within_unit),
+
+            latitude         = dict(target='latitude', type=float, value=latitude),
+            longitude        = dict(target='longitude', type=float, value=longitude),
+
+            # The data format for 'date_start', 'date_created', and 'date_modified' is crazy.
+            # We're going to punt on turning these fields into something Python friendly for now
+            #
+            # For acceptable values, see http://developer.eventbrite.com/doc/events/event_search/
+            date_start     = dict(target='date', type=str, value=date_start),
+            date_created   = dict(target='date_created', type=str, value=date_created),
+            date_modified  = dict(target='date_modified', type=str, value=date_modified),
+
+            organizer_name   = dict(target='organizer', type=str, value=organizer_name),
+            max_events       = dict(target='max', type=int, value=since_id),
+
+            count_only       = dict(target='count_only', type=bool, value=count_only, transform=_boolean_true_or_false),
+            sort_by          = dict(target='sort_by', type=str, value=sort_by),
+            page             = dict(target='page', type=int, value=page),
+            since_id         = dict(target='since_id', type=int, value=since_id),
+            tracking_link    = dict(target='tracking_link', type=str, value=tracking_link),
+        )
+
+        api_arguments = self._process_arguments(method_arguments)
+        api_response = self._execute_api_call('event_search', api_arguments, authenticate=True)
+        return api_response
 
     # UNTESTED
-    def update_event(self, event_id=None, title=None, description=None, start_date=None, end_date=None, timezone=None, public=True,
+    def update_event(self, event_id=None, title=None, description=None, start_date=None, end_date=None, timezone=None, public=False,
         personalized_url=None, venue_id=None, organizer_id=None, capacity=None, currency=None, status=None,
         custom_header=None, custom_footer=None, background_color=None, text_color=None, link_color=None, title_text_color=None,
         box_background_color=None, box_text_color=None, box_border_color=None, box_header_background_color=None, box_header_text_color=None
     ):
+        # For no good reason, default to PST
         timezone = timezone or "GMT-08"
-        public = False
 
         method_arguments = dict(
-            event_id    = dict(target='event_id', type=str, value=event_id, required=True),
+            event_id    = dict(target='event_id', type=int, value=event_id, required=True),
             title       = dict(target='title', type=str, value=title),
             description = dict(target='description', type=str, value=description),
             start_date  = dict(target='start_date', type=datetime.datetime, value=start_date, transform=_datetime_to_string),
