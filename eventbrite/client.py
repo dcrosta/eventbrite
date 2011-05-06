@@ -498,7 +498,7 @@ class EventbriteClient(object):
             asc_or_desc = 'desc'
 
         method_arguments = dict(
-            user_email     = dict(target='user', type=int, value=user_email),
+            user_email     = dict(target='user', type=str, value=user_email),
             do_not_display = dict(target='do_not_display', type=list, value=exclusion_list, transform=_comma_separated_list),
             event_statuses = dict(target='status_list', type=list, value=status_list, transform=_comma_separated_list),
             asc_or_desc    = dict(target='asc_or_desc', type=str, value=asc_or_desc)
