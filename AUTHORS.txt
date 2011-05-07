@@ -7,6 +7,7 @@ Primary authors:
 Contributors (alphabetical by last):
 
 * Adam Berlinsky-Schine <atomos@gmail.com>
+* Dan Crosta <dcrosta - github>
 * Jeremy Latt <jeremy.latt@gmail.com>
 * Ken Mitton <mittonk@alum.mit.edu>
 
